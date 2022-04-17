@@ -1,5 +1,5 @@
 # HammingCode
-Uma biblioteca para codificar, decodificar, verificar e corrrigir mensagens e arquivos usando o [Código de Hamming](https://pt.wikipedia.org/wiki/C%C3%B3digo_de_Hamming)
+Uma biblioteca para codificar, decodificar, verificar e corrigir mensagens e arquivos usando o [Código de Hamming](https://pt.wikipedia.org/wiki/C%C3%B3digo_de_Hamming)
 
 ## Principais Funções
 ```python
@@ -11,10 +11,9 @@ def hamming_correct(message: str, verbose: bool = False) -> str:
 
 # Linha de Comando
 ```
-usage: hamming.py [-h] [--input-mode {bits,text,binary}] [--output-mode {bits,text,binary}] [--input-file INPUT_FILE] [--output-file OUTPUT_FILE] [-v]
-                  {encode,decode,verify} [message]
+usage: hamming.py [-h] [-im {bits,text,binary}] [-om {bits,text,binary}] [-if INPUT_FILE] [-of OUTPUT_FILE] [-v] {encode,decode,verify} [message]
 
-Hamming Encoder/Decoder
+HammingCode
 
 positional arguments:
   {encode,decode,verify}
@@ -23,13 +22,13 @@ positional arguments:
 
 options:
   -h, --help            show this help message and exit
-  --input-mode {bits,text,binary}
+  -im {bits,text,binary}, --input-mode {bits,text,binary}
                         Input mode: bits, text, binary
-  --output-mode {bits,text,binary}
+  -om {bits,text,binary}, --output-mode {bits,text,binary}
                         Output mode: bits, text, binary
-  --input-file INPUT_FILE
+  -if INPUT_FILE, --input-file INPUT_FILE
                         Input file
-  --output-file OUTPUT_FILE
+  -of OUTPUT_FILE, --output-file OUTPUT_FILE
                         Output file
-  -v, --verbose         Verbose mode
+  -v, --verbose         Print verbose
   ```

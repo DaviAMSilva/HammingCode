@@ -84,6 +84,9 @@ def hamming_encode(message: str, verbose: bool = False) -> str:
         str: A string of bits representing the encoded message
     """
 
+    if (check_bits(message) == False):
+        raise ValueError("The message must be a string of 0's and 1's")
+
     message = list(message)
     result = []
 
@@ -140,6 +143,9 @@ def hamming_decode(message: str, verbose: bool = False) -> str:
         str: A string of bits representing the decoded message
     """
 
+    if (check_bits(message) == False):
+        raise ValueError("The message must be a string of 0's and 1's")
+
     result = ""
 
     # verify and correct the message beforehand if possible
@@ -171,6 +177,9 @@ def hamming_verify(message: str, verbose: bool = False) -> tuple:
             2 errors:     (2, -1)
             parity error: (-1, -1)
     """
+
+    if (check_bits(message) == False):
+        raise ValueError("The message must be a string of 0's and 1's")
 
     # calculating the xor of all bits to find the error position
     xor = 0
@@ -213,6 +222,9 @@ def hamming_correct(message: str, verbose: bool = False) -> str:
         str: The corrected message
     """
 
+    if (check_bits(message) == False):
+        raise ValueError("The message must be a string of 0's and 1's")
+
     errors, index = hamming_verify(message, verbose)
 
     if errors == 0:
@@ -237,17 +249,17 @@ def hamming_correct(message: str, verbose: bool = False) -> str:
 
 if __name__ == "__main__":
     # arguments: mode, message, input-mode, output-mode, input-file, output-file, verbose
-    parser = argparse.ArgumentParser(description="Hamming Encoder/Decoder")
+    parser = argparse.ArgumentParser(description="HammingCode")
     parser.add_argument("mode", help="Mode: encode, decode or verify", choices=[
                         "encode", "decode", "verify"])
     parser.add_argument("message", nargs="?", help="Message to encode/decode")
-    parser.add_argument("--input-mode", help="Input mode: bits, text, binary",
+    parser.add_argument("-im", "--input-mode", help="Input mode: bits, text, binary",
                         choices=["bits", "text", "binary"], default="text")
-    parser.add_argument("--output-mode", help="Output mode: bits, text, binary",
+    parser.add_argument("-om", "--output-mode", help="Output mode: bits, text, binary",
                         choices=["bits", "text", "binary"], default="bits")
-    parser.add_argument("--input-file", help="Input file")
-    parser.add_argument("--output-file", help="Output file")
-    parser.add_argument("-v", "--verbose", help="Verbose mode",
+    parser.add_argument("-if", "--input-file", help="Input file")
+    parser.add_argument("-of", "--output-file", help="Output file")
+    parser.add_argument("-v", "--verbose", help="Print verbose",
                         action="store_true", default=False)
     args = parser.parse_args()
 
