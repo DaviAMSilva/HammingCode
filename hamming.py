@@ -250,7 +250,7 @@ if __name__ == "__main__":
                         "encode", "decode", "verify"])
     parser.add_argument("message", nargs="?", help="Message to encode/decode")
     parser.add_argument("-im", "--input-mode", help="Input mode: bits, text, binary",
-                        choices=["bits", "text", "binary"], default="text")
+                        choices=["bits", "text", "binary"], default="bits")
     parser.add_argument("-om", "--output-mode", help="Output mode: bits, text, binary",
                         choices=["bits", "text", "binary"], default="bits")
     parser.add_argument("-if", "--input-file", help="Input file")
