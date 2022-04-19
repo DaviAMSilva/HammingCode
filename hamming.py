@@ -119,10 +119,6 @@ def hamming_encode(message: str, verbose: bool = False) -> str:
     # global parity bit
     result[0] = str(result.count("1") % 2)
 
-    # add 0's to the end of the message to make it a multiple of 8
-    while len(result) % 8 != 0:
-        result.append("0")
-
     if verbose:
         print("\nENCODE")
         print("xor:", xor, "(" + "{0:08b}".format(xor) + ")")
@@ -292,7 +288,7 @@ if __name__ == "__main__":
     elif not message or message == "":
         message = input("Message: ")
 
-    if message == "" or message == bytes():
+    if not message or message == "" or message == bytes():
         raise ValueError("Error: No message provided")
 
     if verbose:
@@ -353,6 +349,10 @@ if __name__ == "__main__":
         if output_mode == "text":
             result = bits_to_text(result)
         elif output_mode == "binary":
+            # add 0's to the end of the message to make it a multiple of 8
+            while len(result) % 8 != 0:
+                result += "0"
+
             result = bits_to_binary(result)
 
     # write the result to the file if specified
@@ -369,5 +369,4 @@ if __name__ == "__main__":
         with open(output_file, write_mode) as f:
             f.write(result)
     else:
-        print("\nRESULT")
         print("Result: ", safe_str(result))

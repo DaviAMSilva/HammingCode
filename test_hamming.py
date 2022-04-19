@@ -9,23 +9,35 @@ from hamming import (HammingCorrectionImpossible, binary_to_bits,
                      text_to_bits)
 
 TEXT_MSG = "this is a test"
-TEXT_BITS = "011001111010001100100001101001011110011001000000110100101110011000100000011000010010000001110100011001010111001101110100"
+TEXT_MSG_ENCODED = "011001111010001100100001101001011110011001000000110100101110011000100000011000010010000001110100011001010111001101110100"
 
+BITS_MSG = "1010111"
+BITS_MSG_ENCODED = "010110101111"
 
 def test_encode():
     encoded = hamming_encode(text_to_bits(TEXT_MSG))
-    assert encoded == TEXT_BITS
+    assert encoded == TEXT_MSG_ENCODED
+
+    encoded = hamming_encode(BITS_MSG)
+    assert encoded == BITS_MSG_ENCODED
 
 
 def test_decode():
-    decoded = hamming_decode(TEXT_BITS)
+    decoded = hamming_decode(TEXT_MSG_ENCODED)
     assert decoded == text_to_bits(TEXT_MSG)
+
+    decoded = hamming_decode(BITS_MSG_ENCODED)
+    assert decoded == BITS_MSG
 
 
 def test_encode_decode():
     encoded = hamming_encode(text_to_bits(TEXT_MSG))
     decoded = bits_to_text(hamming_decode(encoded))
     assert TEXT_MSG == decoded
+
+    encoded = hamming_encode(BITS_MSG)
+    decoded = hamming_decode(encoded)
+    assert BITS_MSG == decoded
 
 
 def test_verify_correct():
