@@ -1,6 +1,4 @@
 import argparse
-import struct
-import sys
 
 
 class HammingCorrectionImpossible(Exception):
