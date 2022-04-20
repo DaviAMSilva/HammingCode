@@ -241,30 +241,8 @@ def hamming_correct(message: str, verbose: bool = False) -> str:
     return result
 
 
-if __name__ == "__main__":
-    # arguments: mode, message, input-mode, output-mode, input-file, output-file, verbose
-    parser = argparse.ArgumentParser(description="HammingCode")
-    parser.add_argument("mode", help="Mode: encode, decode or verify", choices=[
-                        "encode", "decode", "verify"])
-    parser.add_argument("message", nargs="?", help="Message to encode/decode")
-    parser.add_argument("-im", "--input-mode", help="Input mode: bits, text, binary",
-                        choices=["bits", "text", "binary"], default="bits")
-    parser.add_argument("-om", "--output-mode", help="Output mode: bits, text, binary",
-                        choices=["bits", "text", "binary"], default="bits")
-    parser.add_argument("-if", "--input-file", help="Input file")
-    parser.add_argument("-of", "--output-file", help="Output file")
-    parser.add_argument("-v", "--verbose", help="Print verbose",
-                        action="store_true", default=False)
-    args = parser.parse_args()
-
-    mode = args.mode
-    message = args.message
-    input_mode = args.input_mode
-    output_mode = args.output_mode
-    input_file = args.input_file
-    output_file = args.output_file
-    verbose = args.verbose
-    result = ""
+def __hamming_main(mode, message="", input_mode="bits", output_mode="bits", input_file="", output_file="", verbose=True):
+    result = None
 
     # verify output file can be written
     if output_file:
@@ -321,7 +299,7 @@ if __name__ == "__main__":
     elif input_mode == "binary":
         message = binary_to_bits(message)
 
-    # encode/decode/verify
+    # encode/decode/verify/correct
     if mode == "encode":
         result = hamming_encode(message, verbose)
     elif mode == "decode":
@@ -334,13 +312,15 @@ if __name__ == "__main__":
     elif mode == "verify":
         errors, index = hamming_verify(message, verbose)
         if errors == 0:
-            result = "No errors detected"
+            result = "0 bit error detected"
         elif errors == 1:
             result = "1 bit error detected at index {}".format(index)
         elif errors == 2:
-            result = "2 (4, 6, ...) bit error(s) detected"
+            result = "2 (4, 6, ...) bit errors detected"
         elif errors == -1:
             result = "The message parity is not correct"
+    elif mode == "correct":
+        result = hamming_correct(message, verbose)
 
     # convert output to correct format
     if mode != "verify":
@@ -359,7 +339,7 @@ if __name__ == "__main__":
             print("\nOUTPUT")
             print("Output:", safe_str(result))
 
-        if output_mode == "bits" or output_mode == "text":
+        if mode == "verify" or output_mode == "bits" or output_mode == "text":
             write_mode = "w"
         elif output_mode == "binary":
             write_mode = "wb"
@@ -367,4 +347,35 @@ if __name__ == "__main__":
         with open(output_file, write_mode) as f:
             f.write(result)
     else:
-        print("Result: ", safe_str(result))
+        print("Result:", safe_str(result))
+
+    return result
+
+
+if __name__ == "__main__":
+    # arguments: mode, message, input-mode, output-mode, input-file, output-file, verbose
+    parser = argparse.ArgumentParser(description="HammingCode")
+    parser.add_argument("mode", help="Mode: encode, decode, verify or correct", choices=[
+                        "encode", "decode", "verify", "correct"])
+    parser.add_argument("message", nargs="?", help="Message to encode/decode")
+    parser.add_argument("-im", "--input-mode", help="Input mode: bits, text, binary",
+                        choices=["bits", "text", "binary"], default="bits")
+    parser.add_argument("-om", "--output-mode", help="Output mode: bits, text, binary",
+                        choices=["bits", "text", "binary"], default="bits")
+    parser.add_argument("-if", "--input-file", help="Input file")
+    parser.add_argument("-of", "--output-file", help="Output file")
+    parser.add_argument("-v", "--verbose", help="Print verbose",
+                        action="store_true", default=False)
+
+    args = parser.parse_args()
+
+    mode = args.mode
+    message = args.message
+    input_mode = args.input_mode
+    output_mode = args.output_mode
+    input_file = args.input_file
+    output_file = args.output_file
+    verbose = args.verbose
+
+    __hamming_main(mode, message, input_mode, output_mode,
+                   input_file, output_file, verbose)
