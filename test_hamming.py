@@ -2,10 +2,10 @@ import os
 
 import pytest
 
-from hamming import (HammingCorrectionImpossible, binary_to_bits,
-                     bits_to_binary, bits_to_text, hamming_correct,
-                     hamming_decode, hamming_encode, hamming_verify,
-                     text_to_bits, __hamming_main)
+from hamming import (HammingCorrectionImpossible, __hamming_main,
+                     binary_to_bits, bits_to_binary, bits_to_text,
+                     hamming_correct, hamming_decode, hamming_encode,
+                     hamming_verify, text_to_bits)
 
 TEXT_MSG = "this is a test"
 TEXT_MSG_ENCODED = "011001111010001100100001101001011110011001000000110100101110011000100000011000010010000001110100011001010111001101110100"
@@ -85,6 +85,9 @@ def test_verify_correct():
 
 
 def test_main_encode_decode():
+    if not os.path.exists("test"):
+        os.makedirs("test")
+
     # encode
     __hamming_main("encode", TEXT_MSG, "text", "bits",
                    "", "test/encoded.txt", True)
@@ -101,6 +104,9 @@ def test_main_encode_decode():
 
 
 def test_main_binary():
+    if not os.path.exists("test"):
+        os.makedirs("test")
+
     # make a text file
     with open("test/test.txt", "w") as f:
         f.write(TEXT_MSG)
@@ -121,6 +127,9 @@ def test_main_binary():
 
 
 def test_main_verify_correct():
+    if not os.path.exists("test"):
+        os.makedirs("test")
+
     # corrupt 0 bit
     with open("test/test.txt", "w") as f:
         f.write(TEXT_MSG_ENCODED)
